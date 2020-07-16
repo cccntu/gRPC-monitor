@@ -1,3 +1,4 @@
+import argparse
 from concurrent import futures
 import time
 import math
@@ -34,15 +35,22 @@ class SysInfoServiceServicer(info_pb2_grpc.SysInfoServiceServicer):
                 cpu_info = cpu_info,
                 )
 
-def serve():
+def serve(args):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     info_pb2_grpc.add_SysInfoServiceServicer_to_server(
         SysInfoServiceServicer(), server)
-    server.add_insecure_port('[::]:50600')
+    address = f'{args.ip}:{args.port}'
+    port = server.add_insecure_port(address)
+    print(f'serving on port {port}')
     server.start()
     server.wait_for_termination()
 
 if __name__ == '__main__':
     logging.basicConfig()
-    serve()
 
+    parser = argparse.ArgumentParser(description="Parse arguments")
+    parser.add_argument("--ip", type = str, default="[::]", help="port")
+    parser.add_argument("--port", type = str, default="50051", help="port")
+    args = parser.parse_args()
+
+    serve(args)
