@@ -34,22 +34,6 @@ def run():
             print_sys_info(sys_info)
             time.sleep(1)
 
-
-
-if __name__ == '__main__':
-    logging.basicConfig()
-    run()
-    with grpc.insecure_channel('localhost:50600') as channel:
-        stub = info_pb2_grpc.SysInfoServiceStub(channel)
-        sys_info_request = info_pb2.SysInfoRequest()
-
-        while True:
-            sys_info = stub.GetSysInfo(sys_info_request)
-            print_sys_info(sys_info)
-            time.sleep(1)
-
-
-
 if __name__ == '__main__':
     logging.basicConfig()
     run()
