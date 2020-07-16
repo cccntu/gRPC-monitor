@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+/*
+message MemInfo {
+  int32 cpu_count = 1;
+  repeated int32 load_average = 2;
+}
+*/
+message CpuInfo {
+  int32 cpu_count = 1;
+  repeated float load_average = 2;
+}
+message SysInfo {
+  CpuInfo cpu_info = 1;
+}
+
+message SysInfoRequest {
+}
+service SysInfoService {
+  rpc GetSysInfo(SysInfoRequest) returns (SysInfo);
+}
